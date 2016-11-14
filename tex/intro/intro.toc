@@ -1,0 +1,13 @@
+\beamer@endinputifotherversion {3.36pt}
+\select@language {english}
+\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
+\beamer@sectionintoc {2}{Illustration of the Problam and Related Theories}{2}{0}{2}
+\beamer@subsectionintoc {2}{1}{The MCMC Paradigm}{2}{0}{2}
+\beamer@subsectionintoc {2}{2}{Markov Chains as Graphs}{2}{0}{2}
+\beamer@subsectionintoc {2}{3}{Basic Properties}{3}{0}{2}
+\beamer@subsectionintoc {2}{4}{Mixing of Markov Chains}{4}{0}{2}
+\beamer@sectionintoc {3}{Types of Shuffles}{5}{0}{3}
+\beamer@subsectionintoc {3}{1}{Random Transposition}{5}{0}{3}
+\beamer@subsectionintoc {3}{2}{Top-in Shuffle}{6}{0}{3}
+\beamer@subsectionintoc {3}{3}{Overhand Shuffle}{6}{0}{3}
+\beamer@subsectionintoc {3}{4}{Riffle Shuffle}{6}{0}{3}
