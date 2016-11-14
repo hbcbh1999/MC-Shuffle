@@ -32,14 +32,14 @@
 % tikz
 \usepackage{tikz}
 \usetikzlibrary{arrows}
-\usepackage{poker}
+\usepackage{poker_slide}
 
 
 %/////////////////////////////////////////////////////////////////////////////
 %/////////////////////////////////////////////////////////////////////////////
 
-\title{Card Shuffling and MCMC Paradigm}
-\author{Zed}
+\title{\textbf{A Research on Card Shuffling and MCMC Paradigm} \\ Stochastic Process (2016) Course Project}
+\author{CHEN, You; WANG, Shu; YANG, Ze; FENG, Biaojian}
 
 \begin{document}
 \maketitle
@@ -64,6 +64,7 @@ $$
 	\item[$\cdot$] The probability space $\Omega:=\{ \text{All \textbf{Permutations} of the deck.}\}$, $x\in \Omega$ is a permutation of the deck. In a 3-cards deck [AS, KH, QC]\footnote{We use two letters to represent a card, for example, AS means spade A.}, the probability space has cardinality $|\Omega^3|=3!=6$, namely $\Omega^3=\{\text{AKQ, AQK, KAQ, KQA, QAK, QKA}\}$.
 	\item[$\cdot$] $w(x)=1$ for every permutation $x\in\Omega$. Hence $\pi(x)=\frac{1}{|\Omega|}$. That is, by assigning equal probability mass to each permuation, we want to sample a uniformly distributed $x\sim U(\Omega)$.
 	\item[$\cdot$] Denote $X_0$ the initial configuration of deck, which is arbitrary; and $X_t$ is the state of deck after $t^{th}$ shuffle. Note that the state of deck at $t$ only depends on that of $t-1$ and how it is shuffled, we conclude that $\{X_t\}$ is a \textbf{markov chain}.
+  \item[$\cdot$] We want to consider a random variable instead of permutations. Thus we define $X: \Omega \to \mathbb{N}^+$ be the \textbf{lexicographic order} of the deck permutation. For example on deck \{AKQ\} we can define a partial order as $\text{Q}<\text{K}<\text{A}$. Then: $X(\{\text{QKA}\})=1, X(\{\text{KQA}\})=2, X(\{\text{AKQ}\})=6$, etc. Moreover, $X\sim \text{Uniform}(\{1,2,..., n!\})$
 \end{itemize}
 \end{example}
 
@@ -188,9 +189,6 @@ Where $\bm{\pi}$ is $1\times |\Omega|$ vector that stacks the values of $\pi(\cd
 \end{itemize}
 \end{theorem}
 
-\begin{proof} \textit{TODO}
-\end{proof}
-
 \begin{definition} (\textit{Reversibility}) Let $\mathcal{X}=\{X_t\}$ be a Markov chain. And $\pi(\cdot): \Omega \to \mathbb{R}$ is a probability distribution over $\Omega$. $\mathcal{X}$ is called reversible with respect to $\pi$ if, for any $x,y\in \Omega$
 $$\pi(x)P(x,y)=\pi(y)P(y,x)$$
 \textit{Remark.(i)} Intuitively, a markov chain is reversible w.r.t $\pi$ means that the probability mass that flows from note $x \to y$ is same as that from $y \to x$.  \\
@@ -207,8 +205,27 @@ Implies $\bm{\pi}\bm{P}=\bm{\pi}$.
 \begin{definition} (\textit{Ergodic Flow}) The ergodic flow between nodes $x$ and $y$ wrt. a probability distribution $\pi$ is defined
 to be the amount of probability mass flowing between $x,y$:
 $$Q(x,y):=\pi(x)P(x,y)=\pi(y)P(y,x)$$
-Enables us to write transition probability of reversible markov chain 
+Enables us to write transition probability of reversible markov chain.
 \end{definition}
+
+\subsection{Mixing Time and Rate of Convergence}
+We hope to construct a metric to capture how statistically ``close'' two distributional objects are from each other.
+\begin{definition}(\textit{Total Variation Norm})
+For two probability mass function $\pi$, $\mu$, define total variation as
+$$\left\|\mu - \pi\right\|_{TV}:=\frac{1}{2}\sum_{x\in \Omega}|\mu(x)-\pi(x)|$$
+In particular, if $\mu(\cdot)=P^{[t]}(x_0,\cdot)$ is conditional distribution of deck $\{X_t\}$, given initial deck $x_0$. $\pi(\cdot)=\frac{1}{n!}$, then we define
+$$\Delta(t):=\left\|P^{[t]}-\pi\right\|_{TV}=\frac{1}{2}\sum_{x\in \Omega}\left|P^{[t]}(x_0, x)-\frac{1}{n!}\right|$$
+\end{definition}
+
+We may apply Monte Carlo simution method, draw large a sample from $P^{[t]}$ (i.e. the deck after $t$ shuffles), then the empirical distribution of sample appoximates $P^{[t]}$. Then, $\Delta(t)$, as a function of $t$, captures the rate by which the Markov chain converges to uniform $\pi(\cdot)$. Moreover, we can set a \textbf{threshold} to $\Delta(t)$ and calculate time needed for the \textbf{deviation of $X_t$ from the limit is bounded by this threshold.}
+
+\begin{definition}(\textit{Mixing Time})
+Set the threshold as constant $s$, the time needed is called Mixing Time of Markov chain associated with threshold $s$, given by
+$$\tau = \min\left\{t: \Delta(t)\leq s\right\}$$
+\end{definition}
+
+Equipped with the metrics and definitions above, we may able to consider the rate in which difference suffling methods (markov chain) converges to stationary distribution, i.e. the uniform distrobution. 
+
 
 
 
@@ -255,15 +272,54 @@ $G(\mathcal{X})$ is undirect, given by
 \end{center}
 \end{example}
 
-
-\subsection{Top-in Shuffle}
-
-\subsection{Overhand Shuffle}
-
 \subsection{Riffle Shuffle}
+The name Riffle Shuffle refers to the following procedures:
+\begin{itemize}
+  \item[1.] Split the deck into two parts in each hand.
+  \item[2.] Drop the cards one after another to merge into a new deck. The next card is dropped from left hand with probability \# of cards in left hand/\# of cards remaining.
+\end{itemize}
+\begin{example} (\textit{Riffle Shuffle})  One complete riffle shuffle process is illustrated as below:
+\begin{center}
+  Input = \cards{A}\cardh{K}\cardc{Q}\cardd{J}\cards{10}\cardh{9}\\
+  L: \dcards{A}\cardh{K}\cardc{Q}~~~~R: \cardd{J}\cards{10}\cardh{9} $\xrightarrow{w.p. \frac{1}{2}}$ \cardslot\\
+\end{center}
+
+\begin{center}
+  L: \dcardh{K}\cardc{Q}~~~~R: \cardd{J}\cards{10}\cardh{9} $\xrightarrow{w.p. \frac{2}{5}}$ \cards{A}\cardslot\\
+  L: \cardc{Q}~~~~R: \dcardd{J}\cards{10}\cardh{9} $\xrightarrow{w.p. \frac{3}{4}}$ \cards{A}\cardh{K}\cardslot\\
+  L: \dcardc{Q}~~~~R: \cards{10}\cardh{9} $\xrightarrow{w.p. \frac{1}{3}}$ \cards{A}\cardh{K}\cardd{J}\cardslot\\
+  \end{center}
+
+\begin{center}
+ Output = \cards{A}\cardh{K}\cardd{J}\cardc{Q}\cards{10}\cardh{9}\\
+\end{center}
+\end{example}
 
 
+%/////////////////////////////////////////////////////////////////////////////
+\section{Simulated Results for Riffle Shuffle}
+%/////////////////////////////////////////////////////////////////////////////
+It has been shown by Bayer, Diaconis and Persi\cite{bayer} that riffle shuffle has significantly higher rate of convergence, that is, it has short mixing time given a required threshold (distance from output empirical distribution to unifrom distribution.) It is beyond the scope of this project to look into the details of their proofs, instead, we view the result by computer simulation. 
 
+A pure C program is written to finish the shuffling process and compute final distribution (the computation relevent to permutations and the lexicographic orders). The C code is exported to a Python package. It is Python's job to draw the statistics and plots.
+
+\subsection{Mixing of $P^{[t]}$}
+The two figures below represents the mixing of $P^{[t]}$. The $x$ axis lists different lexicographic order of permucation instances, when simulating with 4 cards there are $4!=24$ bars, 5 cards deck has $120$ bars. $y$ axis is the counting within totally $100000$ samples. The first subplot depict the outcome after one shuffle, and the sixth subplot is that after 6 shuffles.
+
+\includegraphics[width=14cm, height=12cm]{figure_2.png}
+
+\includegraphics[width=14cm, height=12cm]{figure_3.png}
+
+When deck size $n=6$, there is no space for bars, so we plot the out come in one plot. Lines of different colors represents (unnormalized) pmf after increasing numbers of shuffles.
+
+\includegraphics[width=14cm, height=8cm]{figure_4.png}
+
+\subsection{Rate of Convergence}
+We now using the simulated data to compute Total Variation Norm from uniform distribution. When choosing a deck $n=6$ cards, shuffle $t$ times for $t=1, 2, ..., 8$, we obtain $\Delta(7)\approx 0.011$, which is fairly close to the targeting distribution.
+\begin{center}
+\includegraphics[width=10cm, height=10cm]{figure_5.png}
+\end{center}
+Hence, with picking appropriate threshold, we can conclude that 6 to 7 riffle shuffles are sufficient to make a 6-cards-deck close enough to as if uniformly distributed in the sense that each permutations arises with equal probability $\frac{1}{n!}$. In fact, due to Bayer and his fellows\cite{bayer}, we still obtain a small quantity (namely 10 to 15) for the number of riffle shuffles required when it comes to a real deck of 52 cards. Since $52!$ is large, simulating this requires heavy computing efforts and optimizion on algorithms, which we leave for further discussion.
 
 \begin{thebibliography}{9}
 \bibitem{mit} 

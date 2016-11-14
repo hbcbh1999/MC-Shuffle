@@ -4,15 +4,16 @@
 %
 % 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{poker}
+\ProvidesPackage{poker_slide}
   [2016/04/25 v0.01 LaTeX package for poker project of stochastic process course]
 
 \RequirePackage{tikz}
 
 %/////////////////////////////////////////////////////////////////////////////
 % define some spatial metrics.
-\pgfmathsetmacro{\cardwidth}{1.4}
-\pgfmathsetmacro{\cardheight}{2.0}
+\pgfmathsetmacro{\cardwidth}{0.9}
+\pgfmathsetmacro{\cardheight}{1.4}
+\pgfmathsetmacro{\basepadding}{0.55}
 \pgfmathsetmacro{\textpadding}{0.1}
 \pgfmathsetmacro{\drawpadding}{0.5}
 
@@ -36,35 +37,35 @@
 
 % blank slot
 \newcommand{\cardslot}{
-	\begin{tikzpicture}
+	\begin{tikzpicture}[baseline=\basepadding cm]
 	    \draw[rounded corners=0.2cm, thinblue] (0,0) rectangle (\cardwidth,\cardheight);
 \end{tikzpicture}}
 
 % --------------------------------------------------------------------------------
 % normal cards
 \newcommand{\cardd}[1]{
-	\begin{tikzpicture}
+	\begin{tikzpicture}[baseline=\basepadding cm]
 	    \draw[rounded corners=0.2cm] (0,0) rectangle (\cardwidth,\cardheight);
 	    \node[text width=0.4cm,below right, myred] at (\textpadding,\cardheight-\textpadding) {
 	        {\Large \resizebox{10pt}{11pt}{#1}}\\ {\Large $\vardiamond$}\\ \vspace{0.15cm}};
 \end{tikzpicture}}
 
 \newcommand{\cards}[1]{
-	\begin{tikzpicture}
+	\begin{tikzpicture}[baseline=\basepadding cm]
 	    \draw[rounded corners=0.2cm] (0,0) rectangle (\cardwidth,\cardheight);
 	    \node[text width=0.4cm,below right] at (\textpadding,\cardheight-\textpadding) {
 	        {\Large \resizebox{10pt}{11pt}{#1}}\\ {\Large $\spadesuit$}\\ \vspace{0.15cm}};
 \end{tikzpicture}}
 
 \newcommand{\cardh}[1]{
-	\begin{tikzpicture}
+	\begin{tikzpicture}[baseline=\basepadding cm]
 	    \draw[rounded corners=0.2cm] (0,0) rectangle (\cardwidth,\cardheight);
 	    \node[text width=0.4cm,below right, myred] at (\textpadding,\cardheight-\textpadding) {
 	        {\Large \resizebox{10pt}{11pt}{#1}}\\ {\Large $\varheart$}\\ \vspace{0.15cm}};
 \end{tikzpicture}}
 
 \newcommand{\cardc}[1]{
-	\begin{tikzpicture}
+	\begin{tikzpicture}[baseline=\basepadding cm]
 	    \draw[rounded corners=0.2cm] (0,0) rectangle (\cardwidth,\cardheight);
 	    \node[text width=0.4cm,below right] at (\textpadding,\cardheight-\textpadding) {
 	        {\Large \resizebox{10pt}{11pt}{#1}}\\ {\Large $\clubsuit$}\\ \vspace{0.15cm}};
@@ -73,7 +74,7 @@
 % --------------------------------------------------------------------------------
 % highlighted cards
 \newcommand{\dcardd}[1]{
-	\begin{tikzpicture}
+	\begin{tikzpicture}[baseline=\basepadding cm]
 		\draw[rounded corners=0.2cm, white] (0,0) rectangle (\cardwidth,\cardheight);
 	    \draw[rounded corners=0.2cm, fill=thinyellow] (0,\drawpadding) rectangle (\cardwidth,\cardheight+\drawpadding);
 	    \node[text width=0.4cm,below right, myred] at (\textpadding,\cardheight-\textpadding+\drawpadding) {
@@ -81,7 +82,7 @@
 \end{tikzpicture}}
 
 \newcommand{\dcards}[1]{
-	\begin{tikzpicture}
+	\begin{tikzpicture}[baseline=\basepadding cm]
 		\draw[rounded corners=0.2cm, white] (0,0) rectangle (\cardwidth,\cardheight);
 	    \draw[rounded corners=0.2cm, fill=thinyellow] (0,\drawpadding) rectangle (\cardwidth,\cardheight+\drawpadding);
 	    \node[text width=0.4cm,below right] at (\textpadding,\cardheight-\textpadding+\drawpadding) {
@@ -89,7 +90,7 @@
 \end{tikzpicture}}
 
 \newcommand{\dcardh}[1]{
-	\begin{tikzpicture}
+	\begin{tikzpicture}[baseline=\basepadding cm]
 		\draw[rounded corners=0.2cm, white] (0,0) rectangle (\cardwidth,\cardheight);
 	    \draw[rounded corners=0.2cm, fill=thinyellow] (0,\drawpadding) rectangle (\cardwidth,\cardheight+\drawpadding);
 	    \node[text width=0.4cm,below right, myred] at (\textpadding,\cardheight-\textpadding+\drawpadding) {
@@ -97,7 +98,7 @@
 \end{tikzpicture}}
 
 \newcommand{\dcardc}[1]{
-	\begin{tikzpicture}
+	\begin{tikzpicture}[baseline=\basepadding cm]
 		\draw[rounded corners=0.2cm, white] (0,0) rectangle (\cardwidth,\cardheight);
 	    \draw[rounded corners=0.2cm, fill=thinyellow] (0,\drawpadding) rectangle (\cardwidth,\cardheight+\drawpadding);
 	    \node[text width=0.4cm,below right] at (\textpadding,\cardheight-\textpadding+\drawpadding) {
